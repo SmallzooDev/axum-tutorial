@@ -26,5 +26,9 @@ cargo watch -q -c -w src/ -x run
 cargo watch -q -c -w src/ -w tests/ -x "test -q quick_dev -- --nocapture"
 ```
 
+```bash
+cargo watch -q -c -w src/ -w tests/ -x "test -- --nocapture"
+```
+
 - `test -q quick_dev -- --nocapture` - 테스트 실행 명령어.
 - `-- --nocapture` - 표준 출력을 갭처하지 않고, 그래도 출력하도록 (실시간 캡처).
