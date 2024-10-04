@@ -5,10 +5,14 @@
 
 ## Commands
 
+**Pre-requisite**
+```bash
+cargo install cargo-watch
+```
 
 **For running backend server**
 ```bash
-cargo watch -q -c -w scr/ -x run
+cargo watch -q -c -w src/ -x run
 ```
 
 - `cargo watch` - 파일의 변경 사항을 감지하고, 특정 명령을 자동으로 실행.
@@ -19,7 +23,7 @@ cargo watch -q -c -w scr/ -x run
 
 **For running test**
 ```bash
-cargo watch -q -c -w scr/ -x tests/ -x "test -q quick_dev -- --nocapture"
+cargo watch -q -c -w src/ -x tests/ -x "test -q quick_dev -- --nocapture"
 ```
 
 - `test -q quick_dev -- --nocapture` - 테스트 실행 명령어.
