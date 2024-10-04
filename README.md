@@ -23,7 +23,7 @@ cargo watch -q -c -w src/ -x run
 
 **For running test**
 ```bash
-cargo watch -q -c -w src/ -x tests/ -x "test -q quick_dev -- --nocapture"
+cargo watch -q -c -w src/ -w tests/ -x "test -q quick_dev -- --nocapture"
 ```
 
 - `test -q quick_dev -- --nocapture` - 테스트 실행 명령어.
