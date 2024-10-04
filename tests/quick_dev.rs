@@ -8,6 +8,7 @@ async fn test() -> Result<()> {
 
     hc.do_get("/hello").await?.print().await?;
     hc.do_get("/hello?name=Axum!!!").await?.print().await?;
+    hc.do_get("/hello2/Axum!!!").await?.print().await?;
 
     Ok(())
 }
