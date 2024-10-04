@@ -3,10 +3,12 @@
 use std::net::SocketAddr;
 
 use axum::{
+    extract::Query,
     response::{Html, IntoResponse},
     routing::get,
     Router,
 };
+use serde::Deserialize;
 
 #[tokio::main]
 async fn main() {
@@ -22,8 +24,14 @@ async fn main() {
     // end_region:   --- Start Server
 }
 
-async fn handler_hello() -> impl IntoResponse {
-    println!("->> {:12} - handler_hello", "HANDLER");
+#[derive(Debug, Deserialize)]
+struct HelloParams {
+    name: Option<String>,
+}
 
-    Html("Hello <strong>World!!!</strong>")
+async fn handler_hello(Query(params): Query<HelloParams>) -> impl IntoResponse {
+    println!("->> {:12} - handler_hello", "HANDLER");
+    let name = params.name.as_deref().unwrap_or("World!!!");
+
+    Html(format!("Hello <strong>{name}</strong>"))
 }
