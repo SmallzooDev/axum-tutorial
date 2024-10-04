@@ -9,4 +9,4 @@ edition = "2021"
 # tokio
 tokio = { version = "1", features = ["full"] }
 # Axum 
-axum = "0.7"
+axum = "0.6"
