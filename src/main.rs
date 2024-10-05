@@ -11,10 +11,17 @@ use axum::{
 use serde::Deserialize;
 use tower_http::services::ServeDir;
 
+pub use self::error::{Error, Result};
+
+mod error;
+
+mod web;
+
 #[tokio::main]
 async fn main() {
     let routes_all = Router::new()
         .merge(routes_hello())
+        .merge(web::routes_login::routes())
         .fallback_service(routes_static()); // 경로가 지정되지 않은 라우팅
 
     let addr = SocketAddr::from(([127, 0, 0, 1], 8080));
