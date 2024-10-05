@@ -5,25 +5,36 @@ use std::net::SocketAddr;
 use axum::{
     extract::{Path, Query},
     response::{Html, IntoResponse},
-    routing::get,
+    routing::{get, get_service},
     Router,
 };
 use serde::Deserialize;
+use tower_http::services::ServeDir;
 
 #[tokio::main]
 async fn main() {
-    let routes_hello = Router::new()
-        .route("/hello", get(handler_hello))
-        .route("/hello2/:name", get(handler_hello2));
+    let routes_all = Router::new()
+        .merge(routes_hello())
+        .fallback_service(routes_static()); // 경로가 지정되지 않은 라우팅
 
-    // region:       --- Start Server
     let addr = SocketAddr::from(([127, 0, 0, 1], 8080));
     println!("->> LISTENING on {addr}\n");
     axum::Server::bind(&addr)
-        .serve(routes_hello.into_make_service())
+        .serve(routes_all.into_make_service())
         .await
         .unwrap();
-    // end_region:   --- Start Server
+}
+
+fn routes_hello() -> Router {
+    Router::new()
+        .route("/hello", get(handler_hello))
+        .route("/hello2/:name", get(handler_hello2))
+}
+
+// 정적 파일을 서빙할 수 있도록 구현한 메서드
+// 지금은 경로가 지정되지 않은 라우팅에 대해서 핸들링할 핸들러로 사용
+fn routes_static() -> Router {
+    Router::new().nest_service("/", get_service(ServeDir::new("./")))
 }
 
 #[derive(Debug, Deserialize)]
