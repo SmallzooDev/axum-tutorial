@@ -4,11 +4,13 @@ use std::net::SocketAddr;
 
 use axum::{
     extract::{Path, Query},
-    response::{Html, IntoResponse},
+    middleware,
+    response::{Html, IntoResponse, Response},
     routing::{get, get_service},
     Router,
 };
 use serde::Deserialize;
+use tower_cookies::CookieManagerLayer;
 use tower_http::services::ServeDir;
 
 pub use self::error::{Error, Result};
@@ -22,6 +24,8 @@ async fn main() {
     let routes_all = Router::new()
         .merge(routes_hello())
         .merge(web::routes_login::routes())
+        .layer(middleware::map_response(main_response_mapper))
+        .layer(CookieManagerLayer::new())
         .fallback_service(routes_static()); // 경로가 지정되지 않은 라우팅
 
     let addr = SocketAddr::from(([127, 0, 0, 1], 8080));
@@ -36,6 +40,14 @@ fn routes_hello() -> Router {
     Router::new()
         .route("/hello", get(handler_hello))
         .route("/hello2/:name", get(handler_hello2))
+}
+
+// client/server 에러를 핸들링하기 위해 middleware layer에 추가
+async fn main_response_mapper(res: Response) -> Response {
+    println!("->> {:<12} - main_response_mapper", "RES_MAPPER");
+
+    println!();
+    res
 }
 
 // 정적 파일을 서빙할 수 있도록 구현한 메서드
