@@ -16,7 +16,7 @@ use tower_http::services::ServeDir;
 pub use self::error::{Error, Result};
 
 mod error;
-
+mod model;
 mod web;
 
 #[tokio::main]
