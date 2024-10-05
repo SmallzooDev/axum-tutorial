@@ -3,6 +3,7 @@
 > 아래의 유튜브 영상을 보고 따라한 프로젝트 입니다.
 > [reference](https://www.youtube.com/watch?v=XZtlD_m59sM&t=3s)
 
+TODO-DELETE - 10-05 18:28 - 34:13
 ## Commands
 
 **Pre-requisite**
